@@ -1,0 +1,124 @@
+{% extends "base_estudiante.html" %}
+
+{% block head %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horas Sociales – Mis Proyectos</title>
+  <link rel="stylesheet" href="/static/css/mis-proyectos.css" />
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% endblock %}
+
+{% block main %}
+    <main class="content">
+
+      <div class="page-header">
+        <h1 class="page-title">Mis proyectos</h1>
+        <p class="page-subtitle">Consulta los proyectos en los que estás inscrito y tu progreso en cada uno.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon blue">📁</div>
+          <div>
+            <div class="stat-label">Proyectos inscritos</div>
+            <div class="stat-value">{{ stats.inscritos }}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">⏰</div>
+          <div>
+            <div class="stat-label">Horas completadas</div>
+            <div class="stat-value green">{{ "%g"|format(stats.obtenidas) }} <span class="frac">/ {{ "%g"|format(stats.totales) }}</span></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber">🕐</div>
+          <div>
+            <div class="stat-label">Horas pendientes</div>
+            <div class="stat-value amber">{{ "%g"|format(stats.pendientes) }}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">⭐</div>
+          <div>
+            <div class="stat-label">Proyectos completados</div>
+            <div class="stat-value">{{ stats.completados }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="projects-card">
+        <div class="projects-card-header">
+          <h2 class="projects-card-title">Lista de mis proyectos</h2>
+        </div>
+
+        <table class="projects-table">
+          <thead>
+            <tr>
+              <th>Proyecto</th>
+              <th>Descripción</th>
+              <th>Fecha de inicio</th>
+              <th>Horas totales</th>
+              <th>Horas obtenidas</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+<tbody>
+  {% set colores = ["blue-bg", "green-bg", "purple-bg"] %}
+  {% for p in proyectos %}
+  <tr>
+    <td>
+      <div class="proj-cell">
+        <div class="proj-icon {{ colores[loop.index0 % 3] }}">📁</div>
+        <div class="proj-name">{{ p.nombre }}</div>
+      </div>
+    </td>
+    <td><span class="proj-desc">{{ p.descripcion or "Sin descripción." }}</span></td>
+    <td>
+      <div class="date-cell">
+        <span class="date-icon">📅</span> {{ p.fecha_inicio.strftime("%d/%m/%Y") }}
+      </div>
+    </td>
+    <td>{{ "%g"|format(p.horas_totales) }} horas</td>
+    <td>
+      <div class="hours-cell">
+        <div class="hours-value">{{ "%g"|format(p.horas_obtenidas) }} horas</div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="progress-pct">{{ p.porcentaje }}%</div>
+      </div>
+    </td>
+    <td><span class="badge {{ p.estado_clase }}">{{ p.estado }}</span></td>
+    <td><a class="action-link" href="/estudiante/proyectos/{{ p.id_proyecto }}">Ver detalles ›</a></td>
+  </tr>
+  {% else %}
+  <tr>
+    <td colspan="7">Todavía no estás inscrito en ningún proyecto.</td>
+  </tr>
+  {% endfor %}
+</tbody>
+        </table>
+      </div>
+
+      <!-- Notice -->
+      <div class="notice">
+        <span class="notice-icon">ℹ️</span>
+        Cuando el profesor registre tus horas, se actualizarán automáticamente en el seguimiento.
+      </div>
+
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/base.js"></script>
+<script src="/static/js/mis-proyectos.js"></script>
+{% endblock %}
+
+
+</body>
+</html>
