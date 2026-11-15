@@ -17,9 +17,14 @@ router = APIRouter()
 
 
 @router.get("/")
-async def home(request: Request, usuario: UserDepend):
+async def home(
+    request: Request, 
+    usuario: UserDepend,
+    conexion: ConexionDepend):
+    estudiante = await obtener_estudiante_por_usuario_id(conexion, usuario.id)
+    horas = await horas_obtenidas(conexion, estudiante["id_estudiante"])
     return templates.TemplateResponse(
-        request=request, name="panel_estudiante.html", context={"usuario": usuario}
+        request=request, name="panel_estudiante.html", context={"usuario": usuario, "estudiante": estudiante, "horas": horas}
     )
 
 @router.get("/estudiante")
