@@ -179,3 +179,25 @@ async def registrar_horas_estudiante(
             ruta_guardada.unlink(missing_ok=True)
         raise
 
+class ErrorInscripcion(Exception):
+    """Regla incumplida; el mensaje se muestra al estudiante."""
+
+    def __init__(self, mensaje: str, status_code: int = 400):
+        super().__init__(mensaje)
+        self.status_code = status_code
+
+
+async def inscribir_estudiante(conexion, estudiante_id: int, proyecto_id: int) -> None:
+    async with conexion.transaction():
+        proyecto = await proyecto_para_inscripcion(conexion, proyecto_id)
+        if proyecto is None or proyecto["estado"] != "activo":
+            raise ErrorInscripcion("Este proyecto no está disponible.", 404)
+
+        inscritos = await contar_inscritos(conexion, proyecto_id)
+        if inscritos >= proyecto["cupos"]:
+            raise ErrorInscripcion("Ya no quedan cupos en este proyecto.", 409)
+
+        nuevo = await insertar_inscripcion(conexion, estudiante_id, proyecto_id)
+        if nuevo is None:
+            raise ErrorInscripcion("Ya estás inscrito en este proyecto.", 409)
+
