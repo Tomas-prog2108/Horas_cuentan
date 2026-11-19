@@ -165,6 +165,7 @@ async def registrar_horas_estudiante(
                 contenido, ext = archivo
                 nombre_archivo = f"{uuid4().hex}{ext}"
                 ruta_guardada = DIRECTORIO_EVIDENCIAS / nombre_archivo
+                DIRECTORIO_EVIDENCIAS.mkdir(parents=True, exist_ok=True)
                 await run_in_threadpool(ruta_guardada.write_bytes, contenido)
 
             await insertar_horas(
@@ -173,29 +174,8 @@ async def registrar_horas_estudiante(
                 observaciones.strip() or None, nombre_archivo,
             )
     except Exception:
-        # Si algo falló después de escribir el archivo, no dejamos basura en disco
+
         if ruta_guardada is not None:
             ruta_guardada.unlink(missing_ok=True)
         raise
 
-class ErrorInscripcion(Exception):
-    """Regla incumplida; el mensaje se muestra al estudiante."""
-
-    def __init__(self, mensaje: str, status_code: int = 400):
-        super().__init__(mensaje)
-        self.status_code = status_code
-
-
-async def inscribir_estudiante(conexion, estudiante_id: int, proyecto_id: int) -> None:
-    async with conexion.transaction():
-        proyecto = await proyecto_para_inscripcion(conexion, proyecto_id)
-        if proyecto is None or proyecto["estado"] != "activo":
-            raise ErrorInscripcion("Este proyecto no está disponible.", 404)
-
-        inscritos = await contar_inscritos(conexion, proyecto_id)
-        if inscritos >= proyecto["cupos"]:
-            raise ErrorInscripcion("Ya no quedan cupos en este proyecto.", 409)
-
-        nuevo = await insertar_inscripcion(conexion, estudiante_id, proyecto_id)
-        if nuevo is None:
-            raise ErrorInscripcion("Ya estás inscrito en este proyecto.", 409)

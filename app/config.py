@@ -5,8 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
-DIRECTORIO_EVIDENCIAS = Path(__file__).resolve().parent.parent / "uploads" / "evidencias"
-DIRECTORIO_EVIDENCIAS.mkdir(parents=True, exist_ok=True)
+
+if os.environ.get("VERCEL"):          
+    DIRECTORIO_EVIDENCIAS = Path("/tmp") / "evidencias"
+else:
+    DIRECTORIO_EVIDENCIAS = Path(__file__).resolve().parent.parent / "uploads" / "evidencias"
 
 def _obligatoria(nombre: str) -> str:
     valor = os.environ.get(nombre)
