@@ -64,15 +64,6 @@ async def profesor_actual(
         raise HTTPException(status_code=403)
     return usuario
 
-async def perfil_profesor_actual(
-    usuario: Profesor_Depend, conexion: ConexionDepend
-) -> dict:
-    perfil = await obtener_profesor_por_usuario_id(conexion, usuario.id)
-    if perfil is None:
-        raise HTTPException(
-            status_code=403, detail="Tu usuario no tiene perfil de profesor."
-        )
-    return perfil
 
 async def administrador_actual(
         usuario: UserDepend,
@@ -84,5 +75,17 @@ async def administrador_actual(
 
 Estudiante_Depend = Annotated[Usuario, Depends(estudiante_actual)]
 Profesor_Depend = Annotated[Usuario, Depends(profesor_actual)]
-PerfilProfesorDepend = Annotated[dict, Depends(perfil_profesor_actual)]
 Administrador_Depend = Annotated[Usuario, Depends(administrador_actual)]
+
+async def perfil_profesor_actual(
+    usuario: Profesor_Depend, conexion: ConexionDepend
+) -> dict:
+    perfil = await obtener_profesor_por_usuario_id(conexion, usuario.id)
+    if perfil is None:
+        raise HTTPException(
+            status_code=403, detail="Tu usuario no tiene perfil de profesor."
+        )
+    return perfil
+
+PerfilProfesorDepend = Annotated[dict, Depends(perfil_profesor_actual)]
+
