@@ -1,0 +1,154 @@
+:root {
+    --fondo-pagina: #111827;
+    --fondo-seccion: #1f2937;
+    --fondo-tarjeta: #374151;
+    --texto-principal: #f9fafb;
+    --texto-secundario: #9ca3af;
+    --color-acento: #3b82f6;
+    --borde-color: #374151;
+}
+
+body.tema-claro {
+    --fondo-pagina: #f3f4f6;
+    --fondo-seccion: #ffffff;
+    --fondo-tarjeta: #e5e7eb;
+    --texto-principal: #111827;
+    --texto-secundario: #6b7280;
+    --color-acento: #2563eb;
+    --borde-color: #d1d5db;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--fondo-pagina);
+    color: var(--texto-principal);
+    font-family: 'Sora', sans-serif;
+    min-height: 100vh;
+    padding: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 900px;
+    margin: 3rem auto 0;
+    background-color: var(--fondo-seccion);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--borde-color);
+}
+
+.volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--texto-principal);
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.volver i {
+    font-size: 1rem;
+    color: var(--texto-secundario);
+}
+
+.form-proyecto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2rem;
+}
+
+.columna {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 1.1rem 0 0.5rem;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--borde-color);
+    background-color: var(--fondo-tarjeta);
+    color: var(--texto-principal);
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.campo:focus {
+    border-color: var(--color-acento);
+}
+
+.campo-textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.acciones-form {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--borde-color);
+    padding-top: 1.5rem;
+}
+
+.btn-cancelar {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    background-color: var(--fondo-tarjeta);
+    color: var(--texto-principal);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-guardar {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-acento);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-guardar:hover {
+    opacity: 0.9;
+}
+
+.main {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.main.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+    .form-proyecto {
+        grid-template-columns: 1fr;
+    }
+}

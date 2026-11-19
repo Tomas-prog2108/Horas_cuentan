@@ -1,0 +1,94 @@
+{% extends "base_profesor.html" %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar horas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/registrar_horas.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+{% endblock %}
+
+{% block main %}
+    <main class="main">
+
+        <section class="container">
+
+            <a href="/profesor" class="volver"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+
+            <div class="encabezado">
+                <h2 class="titulo-seccion">Registrar horas</h2>
+                <p class="descripcion">Completa la información de la actividad realizada.</p>
+            </div>
+
+            {% if error %}
+                <p class="form-error">{{ error }}</p>
+            {% endif %}
+
+            <form id="formRegistrarHoras" method="post" action="/registrar_horas/{{ documento }}" enctype="multipart/form-data">
+
+                <label class="campo-label" for="estudiante">Estudiante</label>
+                <select id="estudiante" name="estudiante_visible" class="campo" disabled>
+                    {% if estudiante %}
+                        <option selected>{{ estudiante.nombre }} ({{ estudiante.grupo }})</option>
+                    {% else %}
+                        <option selected>Estudiante no encontrado</option>
+                    {% endif %}
+                </select>
+
+                <label class="campo-label" for="proyecto_id">Proyecto</label>
+                <select id="proyecto_id" name="proyecto_id" class="campo" required>
+                    <option value="" disabled {% if not proyecto_preseleccionado %}selected{% endif %}>Selecciona un proyecto</option>
+                    {% for p in proyectos %}
+                        <option value="{{ p.id_proyecto }}" {% if proyecto_preseleccionado == p.id_proyecto %}selected{% endif %}>{{ p.nombre }}</option>
+                    {% endfor %}
+                </select>
+                {% if not proyectos %}
+                    <p class="mensaje-vacio">Este estudiante no está inscrito en ninguno de tus proyectos.</p>
+                {% endif %}
+
+                <label class="campo-label" for="fecha">Fecha</label>
+                <input type="date" id="fecha" name="fecha" class="campo" value="{{ valores.fecha }}" required>
+
+                <div class="fila-doble">
+                    <div>
+                        <label class="campo-label" for="hora_inicio">Hora de inicio</label>
+                        <input type="time" id="hora_inicio" name="hora_inicio" class="campo" value="{{ valores.hora_inicio }}" required>
+                    </div>
+                    <div>
+                        <label class="campo-label" for="hora_fin">Hora de finalización</label>
+                        <input type="time" id="hora_fin" name="hora_fin" class="campo" value="{{ valores.hora_fin }}" required>
+                    </div>
+                </div>
+
+                <div class="caja-horas-calculadas">
+                    <span>Horas calculadas automáticamente</span>
+                    <span id="horasCalculadas" class="valor-horas">0 horas</span>
+                </div>
+
+                <label class="campo-label">Subir evidencia</label>
+                <label class="dropzone" for="evidencia">
+                    <i class="fa-solid fa-upload"></i>
+                    <span>Seleccionar archivo o arrastra aquí</span>
+                    <span class="dropzone-hint">JPG, PNG o PDF (Máx. 10MB)</span>
+                    <span id="nombreArchivo" class="dropzone-archivo"></span>
+                </label>
+                <input type="file" id="evidencia" name="evidencia" accept=".jpg,.jpeg,.png,.pdf" hidden>
+
+                <label class="campo-label" for="observaciones">Observaciones (opcional)</label>
+                <textarea id="observaciones" name="observaciones" class="campo campo-textarea" placeholder="Escribe alguna observación...">{{ valores.observaciones }}</textarea>
+
+                <button type="submit" class="btn-guardar" {% if not proyectos %}disabled{% endif %}>Guardar registro</button>
+
+            </form>
+
+        </section>
+
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/registrar_horas.js"></script>
+    <script src="/static/js/base.js"></script>
+{% endblock %}

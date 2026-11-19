@@ -1,0 +1,55 @@
+{% extends "base_profesor.html" %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Gestión de proyectos</title>
+    <link rel="stylesheet" href="/static/css/proyectos_profesor.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% endblock %}
+
+{% block main %}
+<main class="main">
+
+    <div class="container">
+        <div class="header">
+            <h1>Gestión de proyectos</h1>
+            <p>Administra los proyectos que otorgan horas sociales.</p>
+        </div>
+        <a href="/g_proyectos/nuevo" class="btn">+ Nuevo proyecto</a>
+    </div>
+
+    {% for p in proyectos %}
+    <div class="card" data-href="/g_proyectos/{{ p.id_proyecto }}">
+        <div class="info">
+            <h3><a class="enlace-card" href="/g_proyectos/{{ p.id_proyecto }}">{{ p.nombre }}</a></h3>
+            <p>{{ p.descripcion or "Sin descripción." }}</p>
+
+            <div class="datos">
+                <span>{{ p.fecha_inicio.strftime("%d/%m/%Y") }}</span>
+                <span>{{ p.lugar }}</span>
+                <span>{{ p.inscritos }}/{{ p.cupos }} cupos</span>
+                <span>{{ p.estado|capitalize }}</span>
+            </div>
+        </div>
+
+        <a class="btn-editar" href="/g_proyectos/{{ p.id_proyecto }}/editar">Editar</a>
+        <button class="btn-eliminar"
+                hx-delete="/g_proyectos/{{ p.id_proyecto }}"
+                hx-target="closest .card"
+                hx-swap="outerHTML"
+                hx-confirm="¿Eliminar el proyecto «{{ p.nombre }}»? Esta acción no se puede deshacer.">Eliminar</button>
+    </div>
+    {% else %}
+    <p>Todavía no has creado proyectos.</p>
+    {% endfor %}
+
+</main>
+{% endblock %}
+
+{% block script %}
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+<script src="/static/js/proyectos__profesor.js"></script>
+<script src="/static/js/base.js"></script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "base_profesor.html" %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Estudiantes inscritos</title>
+    <link rel="stylesheet" href="/static/css/estudiantes_inscritos.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% endblock %}
+
+{% block main %}
+    <main class="main">
+
+        <section class="container">
+
+            {% if proyecto %}
+
+                <a href="/g_proyectos" class="volver"><i class="fa-solid fa-arrow-left"></i></a>
+
+                <div class="cabecera-proyecto">
+                    <div class="titulo-proyecto">
+                        <span class="icon-box">📁</span>
+                        <h2>Proyecto: {{ proyecto.nombre }}</h2>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div>
+                        <p class="info-label"><i class="fa-solid fa-calendar"></i> Fecha de inicio</p>
+                        <p class="info-valor">{{ proyecto.fecha_inicio.strftime("%d/%m/%Y") }}</p>
+                    </div>
+                    <div>
+                        <p class="info-label"><i class="fa-solid fa-clock"></i> Horas que otorga</p>
+                        <p class="info-valor">{{ "%g"|format(proyecto.horas_otorgadas) }} horas</p>
+                    </div>
+                    <div>
+                        <p class="info-label"><i class="fa-solid fa-user"></i> Profesor encargado</p>
+                        <p class="info-valor">{{ proyecto.profesor }}</p>
+                    </div>
+                    <div>
+                        <p class="info-label"><i class="fa-solid fa-location-dot"></i> Lugar</p>
+                        <p class="info-valor">{{ proyecto.lugar }}</p>
+                    </div>
+                    <div>
+                        <p class="info-label"><i class="fa-solid fa-users"></i> Cupos disponibles</p>
+                        <p class="info-valor">{{ proyecto.cupos_disponibles }}</p>
+                    </div>
+                </div>
+
+                <h3 class="subtitulo">Estudiantes inscritos ({{ inscritos|length }})</h3>
+
+                {% if inscritos %}
+                <table class="tabla-inscritos">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Grado y grupo</th>
+                            <th>Fecha de inscripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for est in inscritos %}
+                        <tr>
+                            <td>
+                                <div class="celda-estudiante">
+                                    <span class="avatar-mini">{{ est.nombre[0] }}</span>
+                                    {{ est.nombre }}
+                                </div>
+                            </td>
+                            <td>{{ est.grupo }}</td>
+                            <td>{{ est.fecha_inscripcion.strftime("%d/%m/%Y") }}</td>
+                            <td>
+                                <a class="btn-mini" href="/registrar_horas/{{ est.documento }}?proyecto={{ proyecto_id }}">Registrar horas</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="mensaje-vacio">Todavía no hay estudiantes inscritos en este proyecto.</p>
+                {% endif %}
+
+                <div class="nota-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Desde aquí puedes ver los estudiantes inscritos en este proyecto y registrar las horas que vayan completando.
+                </div>
+
+            {% else %}
+                <p class="mensaje-vacio">No se encontró el proyecto solicitado.</p>
+            {% endif %}
+
+        </section>
+
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/estudiantes_inscritos.js"></script>
+    <script src="/static/js/base.js"></script>
+{% endblock %}

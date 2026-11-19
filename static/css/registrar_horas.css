@@ -1,0 +1,207 @@
+:root {
+    --fondo-pagina: #111827;
+    --fondo-seccion: #1f2937;
+    --fondo-tarjeta: #374151;
+    --texto-principal: #f9fafb;
+    --texto-secundario: #9ca3af;
+    --color-acento: #3b82f6;
+    --borde-color: #374151;
+}
+
+body.tema-claro {
+    --fondo-pagina: #f3f4f6;
+    --fondo-seccion: #ffffff;
+    --fondo-tarjeta: #e5e7eb;
+    --texto-principal: #111827;
+    --texto-secundario: #6b7280;
+    --color-acento: #2563eb;
+    --borde-color: #d1d5db;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--fondo-pagina);
+    color: var(--texto-principal);
+    font-family: 'Sora', sans-serif;
+    min-height: 100vh;
+    padding: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 600px;
+    margin: 3rem auto 0;
+    background-color: var(--fondo-seccion);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--borde-color);
+}
+
+.volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--texto-secundario);
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+.volver:hover {
+    color: var(--color-acento);
+}
+
+.encabezado {
+    margin-bottom: 1.5rem;
+}
+
+.titulo-seccion {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.descripcion {
+    font-size: 0.875rem;
+    color: var(--texto-secundario);
+    margin-top: 0.25rem;
+}
+
+.campo-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--borde-color);
+    background-color: var(--fondo-tarjeta);
+    color: var(--texto-principal);
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.campo:focus {
+    border-color: var(--color-acento);
+}
+
+.campo:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.campo-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.fila-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.caja-horas-calculadas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 10px;
+    border: 1px solid var(--borde-color);
+    background-color: var(--fondo-tarjeta);
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+}
+
+.valor-horas {
+    font-weight: 700;
+    color: var(--color-acento);
+    font-size: 1rem;
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    padding: 1.5rem 1rem;
+    border: 1.5px dashed var(--borde-color);
+    border-radius: 10px;
+    color: var(--texto-secundario);
+    font-size: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.dropzone:hover {
+    border-color: var(--color-acento);
+}
+
+.dropzone i {
+    font-size: 1.25rem;
+    color: var(--texto-secundario);
+}
+
+.dropzone-hint {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.dropzone-archivo {
+    font-size: 0.8rem;
+    color: var(--color-acento);
+    font-weight: 600;
+}
+
+.btn-guardar {
+    width: 100%;
+    margin-top: 1.75rem;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-acento);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btn-guardar:hover {
+    opacity: 0.9;
+}
+
+.main {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.main.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form-error {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}

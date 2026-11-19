@@ -64,6 +64,12 @@ function Iniciarbusqueda() {
     });
 }
 
+document.addEventListener("click", (e) => {
+  const tarjeta = e.target.closest(".tarjeta-estudiante");
+  if (!tarjeta) return;
+  window.location.href =
+    "/registrar_horas/" + encodeURIComponent(tarjeta.dataset.identificacion);
+});
 /*
 async function cargarEStudiantes(){
     try{
